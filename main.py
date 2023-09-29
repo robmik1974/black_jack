@@ -1,4 +1,4 @@
-############### Our Blackjack House Rules #####################
+## Our Blackjack House Rules ##
 
 ## The deck is unlimited in size.
 ## There are no jokers.
@@ -20,6 +20,19 @@ def deal_cards() -> int:
     return random.choice(cards)
 
 
+def calculate_score(list_of_cards: list[int]) -> int:
+    """Function takes a ist of cards as input and returns the score."""
+    score = sum(list_of_cards)
+    if len(list_of_cards) == 2 and score == 21:
+        return 0
+    if 11 in list_of_cards:
+        if score > 21:
+            list_of_cards.remove(11)
+            list_of_cards.append(1)
+            return sum(list_of_cards)
+    return score
+
+
 user_cards = []
 computer_cards = []
 
@@ -27,5 +40,5 @@ for _ in range(2):
     user_cards.append(deal_cards())
     computer_cards.append(deal_cards())
 
-print(user_cards)
-print(computer_cards)
+print(calculate_score(user_cards))
+print(calculate_score(computer_cards))
