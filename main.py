@@ -15,7 +15,7 @@ import random
 
 def deal_cards() -> int:
     """Function that uses the list of cards to return a random card."""
-    cards = [11, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+    cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
 
     return random.choice(cards)
 
@@ -31,6 +31,21 @@ def calculate_score(list_of_cards: list[int]) -> int:
             list_of_cards.append(1)
             return sum(list_of_cards)
     return score
+
+
+def compare(user: int, computer: int) -> None:
+    """Function passes in the user_score and computer_score and calculates game result"""
+    if user == computer:
+        print("It's draw")
+    elif computer == 0 or user > 21:
+        print("You lose")
+    elif user == 0 or computer_score > 21:
+        print("You won")
+    else:
+        if user > computer:
+            print("You win")
+        else:
+            print("You lose")
 
 
 user_cards = []
@@ -55,17 +70,13 @@ while not STOP_CONTINUE:
             user_cards.append(deal_cards())
             user_score = calculate_score(user_cards)
             print(f"User score: {user_score}")
-            print(f"Computer score: {computer_score}")
         else:
             while not STOP_CONTINUE:
                 if computer_score < 17:
                     computer_cards.append(deal_cards())
                     computer_score = calculate_score(computer_cards)
-                    print(f"User score: {user_score}")
                     print(f"Computer score: {computer_score}")
                 else:
                     STOP_CONTINUE = True
 
-
-print(f"User score: {user_score}")
-print(f"Computer score: {computer_score}")
+compare(user=user_score, computer=computer_score)
