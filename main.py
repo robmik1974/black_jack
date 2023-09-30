@@ -40,5 +40,32 @@ for _ in range(2):
     user_cards.append(deal_cards())
     computer_cards.append(deal_cards())
 
-print(calculate_score(user_cards))
-print(calculate_score(computer_cards))
+user_score = calculate_score(user_cards)
+computer_score = calculate_score(computer_cards)
+print(f"User score: {user_score}")
+print(f"Computer score: {computer_score}")
+
+STOP_CONTINUE = False
+
+while not STOP_CONTINUE:
+    if user_score == 0 or computer_score == 0 or user_score > 21:
+        STOP_CONTINUE = True
+    else:
+        if input("Do you want to draw another card?").lower() == "y":
+            user_cards.append(deal_cards())
+            user_score = calculate_score(user_cards)
+            print(f"User score: {user_score}")
+            print(f"Computer score: {computer_score}")
+        else:
+            while not STOP_CONTINUE:
+                if computer_score < 17:
+                    computer_cards.append(deal_cards())
+                    computer_score = calculate_score(computer_cards)
+                    print(f"User score: {user_score}")
+                    print(f"Computer score: {computer_score}")
+                else:
+                    STOP_CONTINUE = True
+
+
+print(f"User score: {user_score}")
+print(f"Computer score: {computer_score}")
