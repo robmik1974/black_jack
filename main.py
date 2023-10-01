@@ -1,16 +1,8 @@
-## Our Blackjack House Rules ##
-
-## The deck is unlimited in size.
-## There are no jokers.
-## The Jack/Queen/King all count as 10.
-## The the Ace can count as 11 or 1.
-## Use the following list as the deck of cards:
-## cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
-## The cards in the list have equal probability of being drawn.
-## Cards are not removed from the deck as they are drawn.
-## The computer is the dealer.
+"""Simple Black Jack game"""
 
 import random
+import os
+from art import LOGO
 
 
 def deal_cards() -> int:
@@ -33,50 +25,61 @@ def calculate_score(list_of_cards: list[int]) -> int:
     return score
 
 
-def compare(user: int, computer: int) -> None:
+def compare(user: int, computer: int) -> str:
     """Function passes in the user_score and computer_score and calculates game result"""
+    game_result = ""
     if user == computer:
-        print("It's draw")
+        game_result = "It's draw"
     elif computer == 0 or user > 21:
-        print("You lose")
+        game_result = "You lose"
     elif user == 0 or computer_score > 21:
-        print("You won")
+        game_result = "You won"
     else:
         if user > computer:
-            print("You win")
+            game_result = "You win"
         else:
-            print("You lose")
+            game_result = "You lose"
+    return game_result
 
-
-user_cards = []
-computer_cards = []
-
-for _ in range(2):
-    user_cards.append(deal_cards())
-    computer_cards.append(deal_cards())
-
-user_score = calculate_score(user_cards)
-computer_score = calculate_score(computer_cards)
-print(f"User score: {user_score}")
-print(f"Computer score: {computer_score}")
 
 STOP_CONTINUE = False
-
 while not STOP_CONTINUE:
-    if user_score == 0 or computer_score == 0 or user_score > 21:
-        STOP_CONTINUE = True
-    else:
-        if input("Do you want to draw another card?").lower() == "y":
-            user_cards.append(deal_cards())
-            user_score = calculate_score(user_cards)
-            print(f"User score: {user_score}")
-        else:
-            while not STOP_CONTINUE:
-                if computer_score < 17:
-                    computer_cards.append(deal_cards())
-                    computer_score = calculate_score(computer_cards)
-                    print(f"Computer score: {computer_score}")
-                else:
-                    STOP_CONTINUE = True
+    os.system("clear")
+    print(LOGO)
 
-compare(user=user_score, computer=computer_score)
+    user_cards = []
+    computer_cards = []
+
+    for _ in range(2):
+        user_cards.append(deal_cards())
+        computer_cards.append(deal_cards())
+
+    user_score = calculate_score(user_cards)
+    computer_score = calculate_score(computer_cards)
+    print(f"Your hand: {user_cards}")
+    print(f"Computer's hand: [{computer_cards[0]}, ?]")
+
+    STOP_DEAL = False
+
+    while not STOP_DEAL:
+        if user_score == 0 or computer_score == 0 or user_score > 21:
+            STOP_DEAL = True
+        else:
+            if input("Do you want to draw another card ?: ").lower() == "y":
+                user_cards.append(deal_cards())
+                user_score = calculate_score(user_cards)
+                print(f"Your hand: {user_cards}")
+            else:
+                while not STOP_DEAL:
+                    if computer_score < 17:
+                        computer_cards.append(deal_cards())
+                        computer_score = calculate_score(computer_cards)
+                    else:
+                        STOP_DEAL = True
+    print(f"Computer hand: {computer_cards}")
+    print(f"Your score: {user_score}")
+    print(f"Computer's score: {computer_score}")
+    print(compare(user=user_score, computer=computer_score))
+
+    if input("Do you want play again [y/n] ?: ").lower() == "n":
+        STOP_CONTINUE = True
